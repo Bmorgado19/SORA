@@ -3,7 +3,7 @@ import astropy.units as u
 from astropy.coordinates import SkyCoord, CartesianRepresentation
 
 from .meta import BaseShape
-from .utils import read_obj_file
+from .utils import read_obj_file, read_obj_file2 
 
 __all__ = ['Shape3D']
 
@@ -23,7 +23,10 @@ class Shape3D(BaseShape):
 
     def __init__(self, obj_file, texture=None, scale=1) -> None:
         super(Shape3D, self).__init__()
-        vertices, faces = read_obj_file(obj_file)
+        try:
+            vertices, faces = read_obj_file(obj_file)
+        except:
+            vertices, faces = read_obj_file2(obj_file)
         self.name = obj_file
         self._vertices = CartesianRepresentation(*vertices.T, unit=u.km)
         self.scale = scale
